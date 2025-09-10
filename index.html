@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>英语单词学习和默写检查</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div id="learning-mode" class="mode">
+            <!-- 左侧列表 -->
+            <div class="sidebar">
+                <h2>单词列表</h2>
+                <div id="word-list-container">
+                    <ul id="word-list">
+                        <li style="padding:20px;text-align:center;color:#666">正在加载单词...</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 右侧主内容 -->
+            <div class="main-content">
+                <h1>英语单词学习和默写检查</h1>
+                
+                <!-- 单词显示区域 -->
+                <div class="word-display-area">
+                    <div class="word-section">
+                        <!-- 学习模式单词显示 -->
+                        <span id="word" class="word-display">加载中...</span>
+                        <!-- 默写模式下划线显示 -->
+                        <span id="dictation-word" class="word-display hidden">_ _ _ _ _</span>
+                        <button id="play-pronunciation">🔊 播放发音</button>
+                    </div>
+                    
+                    <!-- 音标显示 -->
+                    <div class="phonetic-display"><span id="phonetic"></span></div>
+                    
+                    <!-- 中文释义显示 -->
+                    <div class="chinese-display"><span id="chinese"></span></div>
+                </div>
+
+                <!-- 学习模式操作说明 -->
+                <div id="panel-learning" class="mode-panel">
+                    <div class="controls-hint">
+                        <p>🎮 操作说明：</p>
+                        <ul>
+                            <li><strong>空格键</strong> - 进入默写模式</li>
+                            <li><strong>↑↓方向键</strong> - 切换单词</li>
+                            <li><strong>回车键</strong> - 播放发音</li>
+                            <li><strong>点击单词列表</strong> - 快速跳转</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 默写模式操作说明 -->
+                <div id="panel-dictation" class="mode-panel hidden">
+                    <div class="dictation-info">
+                        <p>📝 请拼写上面的单词</p>
+                        <p>当前连续正确次数：<span id="correct-count">0</span> / 10</p>
+                        <p>连续正确10次后自动进入下一个单词</p>
+                    </div>
+                    <div class="dictation-controls">
+                        <p>🎮 操作说明：</p>
+                        <ul>
+                            <li><strong>字母键</strong> - 输入字母</li>
+                            <li><strong>退格键</strong> - 删除字母</li>
+                            <li><strong>ESC键</strong> - 返回学习模式</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="pronunciation-audio" preload="none"></audio>
+    <script> window.DICTIONARY_PATH = "dictionary.json"; </script>
+    <script src="script.js"></script>
+</body>
+
+</html>

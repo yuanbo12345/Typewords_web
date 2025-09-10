@@ -1,0 +1,323 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    text-align: center;
+    width: 90%;
+    max-width: 1200px;
+    height: 90vh;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.mode {
+    display: block;
+    height: 100%;
+}
+
+.mode.hidden {
+    display: none;
+}
+
+/* 学习模式布局 */
+#learning-mode {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    width: 300px;
+    height: 100%;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #333;
+    text-align: center;
+}
+
+#word-list-container {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+#word-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.word-list-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.word-list-item:hover {
+    background-color: #e9ecef;
+}
+
+.word-list-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.word-list-item .word-text {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.word-list-item .chinese-text {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 3px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.main-content h1 {
+    margin: 0 0 20px 0;
+    font-size: 1.8em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 单词显示区域 */
+.word-display-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.word-section {
+    margin: 20px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.word-display {
+    font-size: 3em;
+    margin: 0 10px;
+    display: inline-block;
+    min-height: 1.2em;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* 隐藏/显示元素的类 */
+.hidden {
+    display: none;
+}
+
+#play-pronunciation {
+    margin-left: 20px;
+    padding: 8px 15px;
+    font-size: 0.6em;
+    cursor: pointer;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.phonetic-display {
+    font-size: 1.8em;
+    margin: 15px 0;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.chinese-display {
+    font-size: 2.2em;
+    margin: 20px 0;
+    color: #333;
+    flex-shrink: 0;
+}
+
+/* 模式面板 */
+.mode-panel {
+    margin-top: 30px;
+    flex-shrink: 0;
+}
+
+.controls-hint, .dictation-info, .dictation-controls {
+    margin: 20px 0;
+}
+
+.controls-hint p, .dictation-info p, .dictation-controls p {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.controls-hint ul, .dictation-controls ul {
+    text-align: left;
+    display: inline-block;
+    font-size: 1.1em;
+}
+
+.controls-hint li, .dictation-controls li {
+    margin: 8px 0;
+}
+
+/* 震动效果 */
+@keyframes vibrate {
+    0% { transform: translate(0); }
+    25% { transform: translate(-5px, 0); }
+    50% { transform: translate(5px, 0); }
+    75% { transform: translate(-5px, 0); }
+    100% { transform: translate(0); }
+}
+
+.vibrate {
+    animation: vibrate 0.1s linear infinite;
+}
+
+.hint {
+    margin-top: 20px;
+    color: #666;
+}
+
+/* 学习模式布局 */
+#learning-mode {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    width: 300px;
+    height: 100%;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #333;
+    text-align: center;
+}
+
+#word-list-container {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+#word-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.word-list-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.word-list-item:hover {
+    background-color: #e9ecef;
+}
+
+.word-list-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.word-list-item .word-text {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.word-list-item .chinese-text {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 3px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 震动效果 */
+@keyframes vibrate {
+    0% { transform: translate(0); }
+    25% { transform: translate(-5px, 0); }
+    50% { transform: translate(5px, 0); }
+    75% { transform: translate(-5px, 0); }
+    100% { transform: translate(0); }
+}
+
+.mode.vibrate {
+    animation: vibrate 0.1s linear infinite;
+}
+
+.word-display {
+    font-size: 2em;
+    margin: 20px 0;
+}
+
+#play-pronunciation {
+    margin-left: 20px;
+    padding: 5px 10px;
+    font-size: 0.5em;
+    cursor: pointer;
+}
+
+.phonetic-display {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #666;
+}
+
+.chinese-display {
+    font-size: 1.5em;
+    margin: 20px 0;
+}
+
+.hint {
+    margin-top: 20px;
+    color: #666;
+}
