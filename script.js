@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ===== 全局状态 =====
     let words = [], currentIndex = 0, correctCount = 0;
+    let targetCount = 10; // 默认连续正确次数
 
     // ===== DOM 引用（放在 DOMContentLoaded 里，确保能拿到） =====
     const wordList = document.getElementById("word-list");
@@ -27,14 +28,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     const panelLearning = document.getElementById("panel-learning");
     const panelDictation = document.getElementById("panel-dictation");
     const correctCountEl = document.getElementById("correct-count");
+    const targetCountEl = document.getElementById("target-count");
+    const targetCountEl2 = document.getElementById("target-count2");
+
+    // 设置相关元素
+    const settingsBtn = document.getElementById("settings-btn");
+    const settingsPanel = document.getElementById("settings-panel");
+    const targetCountInput = document.getElementById("target-count-input");
+    const saveSettingsBtn = document.getElementById("save-settings");
+    const cancelSettingsBtn = document.getElementById("cancel-settings");
+
+    // ===== 调整字体大小以适应内容 =====
+    function adjustFontSize(element, text) {
+        // 重置为默认大小
+        element.style.fontSize = "2.5em";
+        
+        // 获取元素的宽度
+        const maxWidth = element.parentElement.offsetWidth * 0.8; // 80%的父元素宽度
+        
+        // 如果文本宽度超过最大宽度，减小字体大小
+        let fontSize = 2.5; // 默认字体大小
+        element.textContent = text;
+        
+        while (element.scrollWidth > maxWidth && fontSize > 0.8) {
+            fontSize -= 0.1;
+            element.style.fontSize = fontSize + "em";
+        }
+    }
 
     // ===== 更新右侧学习面板 + 高亮左侧单词 =====
     function updateWordDisplay() {
         if (!words.length) return;
         const w = words[currentIndex];
-        wordDisplay.textContent = w.word;
+        // 调整单词显示区域的字体大小以适应内容
+        adjustFontSize(wordDisplay, w.word);
         phoneticDisplay.textContent = w.phonetic || "";
-        chineseDisplay.textContent = w.chinese || "";
+        // 限制中文释义的高度，防止挤占单词区域
+        const chineseText = w.chinese || "";
+        chineseDisplay.textContent = chineseText;
+        // 确保单词区域始终可见
+        wordDisplay.style.visibility = "visible";
+        dictationWord.style.visibility = "visible";
         // 高亮
         [...wordList.children].forEach((li, i) =>
             li.classList.toggle("active", i === currentIndex)
@@ -80,6 +114,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             correctCountEl.textContent = 0;
             const w = words[currentIndex].word;
             dictationWord.textContent = "_ ".repeat(w.length).trim();
+            // 调整默写模式下划线显示区域的字体大小
+            adjustFontSize(dictationWord, "_ ".repeat(w.length).trim());
         } else {
             // 切换到学习模式
             wordDisplay.classList.remove("hidden");
@@ -87,6 +123,35 @@ document.addEventListener("DOMContentLoaded", async () => {
             panelLearning.classList.remove("hidden");
             panelDictation.classList.add("hidden");
         }
+        // 确保单词区域可见
+        updateWordDisplay();
+    }
+
+    // ===== 设置功能 =====
+    function initSettings() {
+        // 设置按钮点击事件
+        settingsBtn.addEventListener("click", () => {
+            targetCountInput.value = targetCount;
+            settingsPanel.classList.toggle("hidden");
+        });
+
+        // 保存设置
+        saveSettingsBtn.addEventListener("click", () => {
+            const newTargetCount = parseInt(targetCountInput.value);
+            if (newTargetCount >= 1 && newTargetCount <= 50) {
+                targetCount = newTargetCount;
+                targetCountEl.textContent = targetCount;
+                targetCountEl2.textContent = targetCount;
+                settingsPanel.classList.add("hidden");
+            } else {
+                alert("请输入1-50之间的数字");
+            }
+        });
+
+        // 取消设置
+        cancelSettingsBtn.addEventListener("click", () => {
+            settingsPanel.classList.add("hidden");
+        });
     }
 
     // ===== 键盘事件 =====
@@ -111,21 +176,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                 let cur = dictationWord.textContent.replace(/\s/g, "");
                 let nxt = cur.replace("_", e.key.toLowerCase());
                 dictationWord.textContent = nxt.split("").join(" ");
+                // 调整字体大小
+                adjustFontSize(dictationWord, nxt.split("").join(" "));
                 if (!nxt.includes("_")) {
                     if (nxt === w.toLowerCase()) {
                         correctCount++;
                         correctCountEl.textContent = correctCount;
-                        if (correctCount >= 10) {
+                        if (correctCount >= targetCount) {
                             currentIndex = (currentIndex + 1) % words.length;
                             updateWordDisplay();
                             switchMode(false);
                         } else {
                             dictationWord.textContent = "_ ".repeat(w.length).trim();
+                            // 调整字体大小
+                            adjustFontSize(dictationWord, "_ ".repeat(w.length).trim());
                         }
                     } else {
                         correctCount = 0;
                         correctCountEl.textContent = 0;
                         dictationWord.textContent = "_ ".repeat(w.length).trim();
+                        // 调整字体大小
+                        adjustFontSize(dictationWord, "_ ".repeat(w.length).trim());
                         // 添加震动效果
                         document.querySelector(".word-display-area").classList.add("vibrate");
                         setTimeout(() => {
@@ -134,6 +205,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
                 }
             } else if (e.code === "Backspace") {
+                e.preventDefault();
                 let cur = dictationWord.textContent;
                 // 找到最后一个非下划线字符的位置
                 let lastCharIndex = -1;
@@ -147,6 +219,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (lastCharIndex !== -1) {
                     let newContent = cur.substring(0, lastCharIndex) + '_' + cur.substring(lastCharIndex + 1);
                     dictationWord.textContent = newContent;
+                    // 调整字体大小
+                    adjustFontSize(dictationWord, newContent);
                 }
             } else if (e.code === "Escape") {
                 switchMode(false);
@@ -164,6 +238,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateWordDisplay();
     // 确保默认显示学习模式
     switchMode(false);
+    // 初始化设置功能
+    initSettings();
 
     playBtn.addEventListener("click", playPronunciation);
 });

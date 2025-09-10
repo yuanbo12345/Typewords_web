@@ -59,8 +59,8 @@
                 <div id="panel-dictation" class="mode-panel hidden">
                     <div class="dictation-info">
                         <p>📝 请拼写上面的单词</p>
-                        <p>当前连续正确次数：<span id="correct-count">0</span> / 10</p>
-                        <p>连续正确10次后自动进入下一个单词</p>
+                        <p>当前连续正确次数：<span id="correct-count">0</span> / <span id="target-count">10</span></p>
+                        <p>连续正确<span id="target-count2">10</span>次后自动进入下一个单词</p>
                     </div>
                     <div class="dictation-controls">
                         <p>🎮 操作说明：</p>
@@ -69,6 +69,19 @@
                             <li><strong>退格键</strong> - 删除字母</li>
                             <li><strong>ESC键</strong> - 返回学习模式</li>
                         </ul>
+                    </div>
+                    <!-- 默写设置 -->
+                    <div class="dictation-settings">
+                        <button id="settings-btn" class="settings-btn">⚙️ 设置连续正确次数</button>
+                        <div id="settings-panel" class="settings-panel hidden">
+                            <h3>默写设置</h3>
+                            <label for="target-count-input">连续正确次数：</label>
+                            <input type="number" id="target-count-input" min="1" max="50" value="10">
+                            <div class="settings-buttons">
+                                <button id="save-settings" class="save-btn">保存</button>
+                                <button id="cancel-settings" class="cancel-btn">取消</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
